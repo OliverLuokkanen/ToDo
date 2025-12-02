@@ -1,29 +1,45 @@
 import express from 'express'
 import cors from 'cors'
+import dotenv from 'dotenv'
+import { pool } from './db.js'
 import todoRouter from './routes/todoRouter.js'
 import userRouter from './routes/userRouter.js'
 
+dotenv.config()
+
 const app = express()
-const port = process.env.PORT || 3001
 
 app.use(cors())
 app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
 
-// Delegate endpoints to router
 app.use('/', todoRouter)
 app.use('/user', userRouter)
-// Centralized error handler middleware
+
+// Yksinkertainen health-check
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' })
+})
+
+// Virheenkäsittelijä
 app.use((err, req, res, next) => {
-  const statusCode = err.status || 500
-  res.status(statusCode).json({
+  console.error(err)
+  const status = err.status || 500
+  res.status(status).json({
     error: {
-      message: err.message || 'Internal server error',
-      status: statusCode
+      message:
+        status === 500 ? 'Internal server error' : err.message || 'Error',
+      status
     }
   })
 })
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`)
-})
+const port = process.env.PORT || 3001
+const host = process.env.HOST || '127.0.0.1'
+
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(port, host, () => {
+    console.log(`Server running at http://${host}:${port}`)
+  })
+}
+
+export default app

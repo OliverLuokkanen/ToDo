@@ -10,10 +10,10 @@ const __dirname = path.dirname(__filename)
 
 const JWT_SECRET = process.env.JWT_SECRET || process.env.JWT_SECRET_KEY
 
-// initializeTestDb now returns a Promise so tests can await it
+// Alustaa testitietokannan ajamalla todo.sql
 const initializeTestDb = async () => {
   try {
-    const sqlPath = path.resolve(__dirname, '..', 'todo.sql') // todo.sql should be in server/
+    const sqlPath = path.resolve(__dirname, '..', 'todo.sql')
     if (!fs.existsSync(sqlPath)) {
       throw new Error(`todo.sql not found at ${sqlPath}`)
     }
@@ -26,6 +26,7 @@ const initializeTestDb = async () => {
   }
 }
 
+// Lisää testikäyttäjän account-tauluun
 const insertTestUser = async (user) => {
   try {
     const hashedPassword = await bcrypt.hash(user.password, 10)
@@ -40,9 +41,12 @@ const insertTestUser = async (user) => {
   }
 }
 
+// Luo JWT-tokenin sähköpostista
 const getToken = (email) => {
   if (!JWT_SECRET) {
-    throw new Error('JWT secret is not configured on server (JWT_SECRET or JWT_SECRET_KEY)')
+    throw new Error(
+      'JWT secret is not configured on server (JWT_SECRET or JWT_SECRET_KEY)'
+    )
   }
   return jwt.sign({ email }, JWT_SECRET)
 }

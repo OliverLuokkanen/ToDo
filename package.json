@@ -2,11 +2,11 @@
   "name": "todo",
   "version": "1.0.0",
   "private": true,
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
+"scripts": {
+  "dev": "vite --port 5174",
+  "build": "vite build",
+  "preview": "vite preview"
+},
   "dependencies": {
     "axios": "^1.13.2",
     "react": "^18.2.0",
