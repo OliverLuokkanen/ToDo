@@ -3,7 +3,8 @@ import axios from 'axios'
 import Row from './components/Row'
 import './App.css'
 
-const API = 'http://localhost:3001'
+const API = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+axios.defaults.baseURL = API
 
 export default function App() {
   const [task, setTask] = useState('')
