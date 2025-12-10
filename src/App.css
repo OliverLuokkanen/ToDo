@@ -21,6 +21,21 @@ input {
   border: 1px solid #999;
   border-radius: 2px;
   width: 220px;
+  margin-right: 4px;
+  margin-bottom: 4px;
+}
+
+button {
+  padding: 6px 12px;
+  font-size: 14px;
+  border: 1px solid #666;
+  background: #eee;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+button:hover {
+  background: #ddd;
 }
 
 ul {
@@ -47,4 +62,54 @@ li {
   background: #eee;
   cursor: pointer;
   border-radius: 3px;
+}
+
+.auth-section {
+  margin-bottom: 16px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fafafa;
+}
+
+.auth-section form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.auth-toggle {
+  margin: 0;
+  font-size: 13px;
+}
+
+.auth-toggle button {
+  padding: 2px 6px;
+  font-size: 12px;
+  background: none;
+  border: none;
+  color: #0066cc;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.user-section {
+  margin-bottom: 12px;
+  padding: 8px;
+  background: #e8f5e9;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-section p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.user-section button {
+  padding: 4px 8px;
+  font-size: 12px;
 }
