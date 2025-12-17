@@ -1,0 +1,128 @@
+:root {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  color: #111827;
+  background-color: #f3f4f6;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #e5e7eb 0, #f9fafb 55%, #e5e7eb 100%);
+}
+
+.app-root {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.app-card {
+  width: 100%;
+  max-width: 520px;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow:
+    0 20px 25px -5px rgba(15, 23, 42, 0.08),
+    0 8px 10px -6px rgba(15, 23, 42, 0.06);
+  padding: 2.5rem 2rem;
+  box-sizing: border-box;
+}
+
+.app-title {
+  margin: 0 0 0.25rem;
+  font-size: 1.9rem;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+.app-subtitle {
+  margin: 0 0 1.5rem;
+  font-size: 0.95rem;
+  text-align: center;
+  color: #6b7280;
+}
+
+.task-input {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  margin-bottom: 1.5rem;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  outline: none;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.task-input::placeholder {
+  color: #9ca3af;
+}
+
+.task-input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18);
+  background-color: #f9fafb;
+}
+
+.task-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.task-empty {
+  padding: 0.9rem 1rem;
+  border-radius: 0.75rem;
+  background: #f9fafb;
+  border: 1px dashed #e5e7eb;
+  font-size: 0.9rem;
+  color: #9ca3af;
+  text-align: center;
+}
+
+.task-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.85rem;
+  border-radius: 0.75rem;
+  margin-bottom: 0.4rem;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  box-sizing: border-box;
+}
+
+.task-row:hover {
+  background: #f3f4f6;
+}
+
+.task-text {
+  flex: 1;
+  font-size: 0.95rem;
+  color: #111827;
+  margin-right: 0.75rem;
+  word-break: break-word;
+}
+
+.delete-button {
+  border: none;
+  border-radius: 999px;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  background: #fee2e2;
+  color: #b91c1c;
+  transition: background-color 0.15s ease, transform 0.05s ease;
+}
+
+.delete-button:hover {
+  background: #fecaca;
+}
+
+.delete-button:active {
+  transform: scale(0.96);
+}
