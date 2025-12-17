@@ -1,16 +1,17 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import "./App.css";
-import Row from "./components/Row.jsx";
+import Row from "../components/Row.jsx";
+import { useUser } from "../context/userProvider.jsx";
+import "../App.css";
 
-// Supports optional .env: VITE_API_URL=http://localhost:3001
+// API-pohja .env:stä
 const API = import.meta.env.VITE_API_URL ?? "http://localhost:3001";
 
 export default function App() {
   const [task, setTask] = useState("");
   const [tasks, setTasks] = useState([]);
+  const { user, logout } = useUser();
 
-  // Helper: extract a useful error message from Axios error
   function extractErrorMessage(error) {
     const data = error?.response?.data;
     return (
@@ -22,8 +23,14 @@ export default function App() {
     );
   }
 
-  // Fetch all tasks once when component mounts
+  // Hae tehtävät, kun komponentti mounttaa ja kun user/token muuttuu.
   useEffect(() => {
+    // Jos ei ole kirjautunut, ei edes yritetä
+    if (!user || !user.token) {
+      setTasks([]);
+      return;
+    }
+
     let cancelled = false;
 
     async function loadTasks() {
@@ -47,21 +54,31 @@ export default function App() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [user]);
 
   async function addTask() {
     const trimmed = task.trim();
-    if (!trimmed) {
-      // Do not send empty / whitespace-only tasks
+    if (!trimmed) return;
+    if (!user || !user.token) {
+      alert("You must be signed in to add tasks.");
       return;
     }
 
     try {
-      const res = await axios.post(`${API}/create`, {
-        description: trimmed
-      });
+      const headers = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+          "Content-Type": "application/json"
+        }
+      };
 
-      const created = res.data; // expected: { id, description }
+      const res = await axios.post(
+        `${API}/create`,
+        { description: trimmed },
+        headers
+      );
+
+      const created = res.data;
       setTasks((prev) => [...prev, created]);
       setTask("");
     } catch (error) {
@@ -70,8 +87,19 @@ export default function App() {
   }
 
   async function deleteTask(id) {
+    if (!user || !user.token) {
+      alert("You must be signed in to delete tasks.");
+      return;
+    }
+
     try {
-      await axios.delete(`${API}/delete/${id}`);
+      const headers = {
+        headers: {
+          Authorization: `Bearer ${user.token}`
+        }
+      };
+
+      await axios.delete(`${API}/delete/${id}`, headers);
       setTasks((prev) => prev.filter((item) => item.id !== id));
     } catch (error) {
       alert(`Failed to delete task: ${extractErrorMessage(error)}`);
@@ -85,13 +113,31 @@ export default function App() {
     }
   }
 
+  function handleLogout() {
+    logout(); // tyhjentää käyttäjän + tokenin
+    // ProtectedRoute huolehtii siitä, ettei ilman useria pääse takaisin /
+  }
+
   return (
     <div className="app-root">
       <div className="app-card">
-        <h1 className="app-title">Todos</h1>
-        <p className="app-subtitle">
-          Add tasks, and delete them when you&apos;re done.
-        </p>
+        <header className="app-header">
+          <div>
+            <h1 className="app-title">Todos</h1>
+            <p className="app-subtitle">
+              Add tasks, and delete them when you&apos;re done.
+            </p>
+          </div>
+
+          {user && (
+            <div className="app-user">
+              <span className="app-user-email">{user.email}</span>
+              <button className="logout-button" onClick={handleLogout}>
+                Logout
+              </button>
+            </div>
+          )}
+        </header>
 
         <input
           type="text"
